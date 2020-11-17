@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(fanuc_kinematics_msgs)
+project(kinematics)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -7,11 +7,11 @@ project(fanuc_kinematics_msgs)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(
-    catkin REQUIRED
-    message_generation
-    geometry_msgs
-    moveit_msgs
+find_package(catkin REQUIRED COMPONENTS
+  rosconsole
+  roscpp
+  moveit_ros_planning_interface
+  kinematics_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,10 +55,11 @@ find_package(
 # )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  ComputeFK.srv
-)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -68,11 +69,10 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  geometry_msgs
-  moveit_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,8 +105,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES fanuc_kinematics_msgs
-#  CATKIN_DEPENDS other_catkin_pkg
+#  LIBRARIES fanuc_kinematics
+#  CATKIN_DEPENDS rosconsole roscpp
 #  DEPENDS system_lib
 )
 
@@ -118,12 +118,15 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-# ${catkin_INCLUDE_DIRS}
+  src/forward_kinematics_client_node
+  src/forward_kinematics_server_node
+  src/test_node
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/fanuc_kinematics_msgs.cpp
+#   src/${PROJECT_NAME}/fanuc_kinematics.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -134,7 +137,12 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/fanuc_kinematics_msgs_node.cpp)
+add_executable(
+  fkc_node src/forward_kinematics_client_node/main.cpp
+)
+add_executable(
+  fks_node src/forward_kinematics_server_node/main.cpp
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,9 +155,14 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(
+  fkc_node
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(
+  fks_node
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -198,7 +211,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_fanuc_kinematics_msgs.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_fanuc_kinematics.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

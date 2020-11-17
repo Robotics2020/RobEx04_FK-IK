@@ -3,7 +3,7 @@
 #include <moveit/robot_state/conversions.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit_msgs/GetPositionFK.h>
-#include "fanuc_kinematics_msgs/ComputeFK.h"
+#include "kinematics_msgs/ComputeFK.h"
 
 
 template<class ServiceType>
@@ -51,10 +51,10 @@ int main(int argc, char** argv) {
     // Get the service
     std::string serviceName;
     ros::param::get("FK_service", serviceName);
-    ros::ServiceClient client = nodeHandle.serviceClient<fanuc_kinematics_msgs::ComputeFK>(serviceName);
+    ros::ServiceClient client = nodeHandle.serviceClient<kinematics_msgs::ComputeFK>(serviceName);
 
     // Create request
-    fanuc_kinematics_msgs::ComputeFK service;
+    kinematics_msgs::ComputeFK service;
     service.request.header.stamp = ros::Time::now();
     service.request.header.frame_id = modelFrame;
     service.request.fk_link_names = { linkNames.back() };

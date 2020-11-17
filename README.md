@@ -37,19 +37,19 @@
 To compute FK without comparing with [moveit_msgs/GetPositionFK Service](http://docs.ros.org/en/melodic/api/moveit_msgs/html/srv/GetPositionFK.html), run
 
 ```bash
-roslaunch fanuc_kinematics fanuc_fk.launch
+roslaunch kinematics fk.launch
 ```
 
 or
 
 ```bash
-roslaunch fanuc_kinematics fanuc_fk.launch test:=false
+roslaunch kinematics fk.launch test:=false
 ```
 
 To compute FK and compare it with [moveit_msgs/GetPositionFK Service](http://docs.ros.org/en/melodic/api/moveit_msgs/html/srv/GetPositionFK.html), run
 
 ```bash
-roslaunch fanuc_kinematics fanuc_fk.launch test:=true
+roslaunch kinematics fk.launch test:=true
 ```
 
 ### Inverse Kinematics

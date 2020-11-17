@@ -3,10 +3,10 @@
 #include <moveit/robot_state/conversions.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <geometry_msgs/PoseStamped.h>
-#include "fanuc_kinematics_msgs/ComputeFK.h"
+#include "kinematics_msgs/ComputeFK.h"
 
 
-bool compute_fk(fanuc_kinematics_msgs::ComputeFK::Request& request, fanuc_kinematics_msgs::ComputeFK::Response& response) {    
+bool compute_fk(kinematics_msgs::ComputeFK::Request& request, kinematics_msgs::ComputeFK::Response& response) {    
     // Load robot model
     static robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
     static robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
