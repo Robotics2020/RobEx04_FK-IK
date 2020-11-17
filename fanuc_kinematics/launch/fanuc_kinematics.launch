@@ -1,0 +1,5 @@
+<launch>
+
+    <include file="$(find fanuc_moveit_config)/launch/demo.launch" />
+
+</launch>
