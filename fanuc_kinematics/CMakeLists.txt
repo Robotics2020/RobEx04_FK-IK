@@ -10,6 +10,7 @@ project(fanuc_kinematics)
 find_package(catkin REQUIRED COMPONENTS
   rosconsole
   roscpp
+  moveit_ros_planning_interface
 )
 
 ## System dependencies are found with CMake's conventions
@@ -116,8 +117,8 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  src/direct_kinematics_client_node
-  src/direct_kinematics_server_node
+  src/forward_kinematics_client_node
+  src/forward_kinematics_server_node
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -135,10 +136,10 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(
-  dkc_node src/direct_kinematics_client_node/main.cpp
+  fkc_node src/forward_kinematics_client_node/main.cpp
 )
 add_executable(
-  dks_node src/direct_kinematics_server_node/main.cpp
+  fks_node src/forward_kinematics_server_node/main.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -153,11 +154,11 @@ add_executable(
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
-  dkc_node
+  fkc_node
   ${catkin_LIBRARIES}
 )
 target_link_libraries(
-  dks_node
+  fks_node
   ${catkin_LIBRARIES}
 )
 

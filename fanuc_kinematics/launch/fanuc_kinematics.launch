@@ -2,4 +2,7 @@
 
     <include file="$(find fanuc_moveit_config)/launch/demo.launch" />
 
+    <node name="FK_client" pkg="fanuc_kinematics" type="fkc_node" output="screen" />
+    <node name="FK_server" pkg="fanuc_kinematics" type="fks_node" output="screen" />
+
 </launch>
