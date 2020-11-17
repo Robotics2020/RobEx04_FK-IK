@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
     // Init node
-    ros::init(argc, argv, "fanuc_FK_client");
+    ros::init(argc, argv, "fanuc_FK_API");
     ros::NodeHandle nodeHandle;
 
     while (true) {    

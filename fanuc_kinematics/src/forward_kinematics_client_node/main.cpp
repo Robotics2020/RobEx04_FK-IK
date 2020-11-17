@@ -7,5 +7,11 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "fanuc_FK_client");
     ros::NodeHandle nodeHandle;
 
+    // Start the main loop
+    ros::Rate rate(0.1);
+    while (nodeHandle.ok()) {
+        rate.sleep();
+    }
+
     return 0;
 }

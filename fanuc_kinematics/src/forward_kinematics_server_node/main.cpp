@@ -1,17 +1,20 @@
 #include <ros/ros.h>
+#include "fanuc_kinematics_msgs/ComputeFK.h"
+
+
+bool compute_fk(fanuc_kinematics_msgs::ComputeFK::Request& request,
+                fanuc_kinematics_msgs::ComputeFK::Response& response)
+{
+    return true;
+}
 
 
 int main(int argc, char** argv) {
-    
-    // Init node
     ros::init(argc, argv, "fanuc_FK_server");
     ros::NodeHandle nodeHandle;
-    
-    // Start the main loop
-    ros::Rate rate(0.1);
-    while (nodeHandle.ok()) {
-        rate.sleep();
-    }
-
+    std::string serviceName;
+    ros::param::get("FK_service", serviceName);
+    ros::ServiceServer service = nodeHandle.advertiseService(serviceName, compute_fk);
+    ros::spin();
     return 0;
 }

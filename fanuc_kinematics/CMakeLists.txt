@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   rosconsole
   roscpp
   moveit_ros_planning_interface
+  fanuc_kinematics_msgs
 )
 
 ## System dependencies are found with CMake's conventions
