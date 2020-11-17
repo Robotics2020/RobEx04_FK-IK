@@ -2,6 +2,7 @@
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/robot_state/conversions.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
+#include <geometry_msgs/PoseStamped.h>
 #include "fanuc_kinematics_msgs/ComputeFK.h"
 
 
@@ -19,10 +20,29 @@ bool compute_fk(fanuc_kinematics_msgs::ComputeFK::Request& request, fanuc_kinema
     // Iterate over links
     for(std::size_t i = 0; i < links.size(); ++i) {
         std::string link = links[i];
+
         // Compute FK for each link
         const Eigen::Isometry3d& endEffectorState = robotState->getGlobalLinkTransform(link);
-        ROS_INFO_STREAM("TEST Translation: \n" << endEffectorState.translation() << "\n");
-        ROS_INFO_STREAM("TEST Rotation: \n" << endEffectorState.rotation() << "\n");
+        const Eigen::Vector3d translation = endEffectorState.translation();
+        const Eigen::Quaterniond rotation(endEffectorState.rotation()); 
+        
+        // Convert to message
+        geometry_msgs::PoseStamped poseStamped;
+        poseStamped.header = request.header;
+        poseStamped.pose.position.x = translation.x();
+        poseStamped.pose.position.y = translation.y();
+        poseStamped.pose.position.z = translation.z();
+        poseStamped.pose.orientation.x = rotation.x();
+        poseStamped.pose.orientation.y = rotation.y();
+        poseStamped.pose.orientation.z = rotation.z();
+        poseStamped.pose.orientation.w = rotation.w();
+        response.pose_stamped.push_back(poseStamped);
+
+        // ROS_INFO_STREAM("TEST Translation: \n" << response.pose_stamped[i].pose.position << "\n");
+        // ROS_INFO_STREAM("TEST Rotation: \n" << response.pose_stamped[i].pose.orientation << "\n");
+
+        ROS_INFO_STREAM("TEST Translation: \n" << poseStamped.pose.position << "\n");
+        ROS_INFO_STREAM("TEST Rotation: \n" << poseStamped.pose.orientation << "\n");
     }
 
     return true;

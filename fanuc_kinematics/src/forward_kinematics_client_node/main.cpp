@@ -33,11 +33,14 @@ int main(int argc, char** argv) {
     moveit::core::robotStateToRobotStateMsg(*robotState, service.request.robot_state);
 
     // Post request
-    ros::Rate(0.1).sleep();
-    if (client.call(service)) {
-        return 0;
-    } else {
-        ROS_ERROR("Failed to call service %s", serviceName.c_str());
+    ros::Rate rate = ros::Rate(0.1);
+    while (true) {
+        rate.sleep();
+        if (client.call(service)) {
+            continue;    
+        } else {
+            ROS_ERROR("Failed to call service %s", serviceName.c_str());
+        }
     }
 
     return 0;
