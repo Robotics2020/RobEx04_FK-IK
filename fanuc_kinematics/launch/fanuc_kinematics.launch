@@ -2,9 +2,11 @@
 
     <include file="$(find fanuc_moveit_config)/launch/demo.launch" />
 
+    <arg name="test" default="false" />
+
     <param name="FK_service" value="/fanuc_compute_fk" />
 
-    <node name="FK_client" pkg="fanuc_kinematics" type="fkc_node" output="screen" />
+    <node name="FK_client" pkg="fanuc_kinematics" type="fkc_node" output="screen" args="$(arg test)"/>
     <node name="FK_server" pkg="fanuc_kinematics" type="fks_node" output="screen" />
 
 </launch>

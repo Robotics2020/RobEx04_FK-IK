@@ -120,7 +120,7 @@ include_directories(
 # include
   src/forward_kinematics_client_node
   src/forward_kinematics_server_node
-  src/test_nodes
+  src/test_node
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -143,9 +143,6 @@ add_executable(
 add_executable(
   fks_node src/forward_kinematics_server_node/main.cpp
 )
-add_executable(
-  fkapi src/test_nodes/use_api.cpp
-)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -164,10 +161,6 @@ target_link_libraries(
 )
 target_link_libraries(
   fks_node
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(
-  fkapi
   ${catkin_LIBRARIES}
 )
 
