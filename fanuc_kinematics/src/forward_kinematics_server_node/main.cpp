@@ -36,13 +36,10 @@ bool compute_fk(fanuc_kinematics_msgs::ComputeFK::Request& request, fanuc_kinema
         poseStamped.pose.orientation.y = rotation.y();
         poseStamped.pose.orientation.z = rotation.z();
         poseStamped.pose.orientation.w = rotation.w();
+        
+        // Compose response
         response.pose_stamped.push_back(poseStamped);
-
-        // ROS_INFO_STREAM("TEST Translation: \n" << response.pose_stamped[i].pose.position << "\n");
-        // ROS_INFO_STREAM("TEST Rotation: \n" << response.pose_stamped[i].pose.orientation << "\n");
-
-        ROS_INFO_STREAM("TEST Translation: \n" << poseStamped.pose.position << "\n");
-        ROS_INFO_STREAM("TEST Rotation: \n" << poseStamped.pose.orientation << "\n");
+        response.fk_link_names.push_back(link);
     }
 
     return true;

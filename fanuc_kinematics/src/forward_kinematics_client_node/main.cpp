@@ -37,7 +37,12 @@ int main(int argc, char** argv) {
     while (true) {
         rate.sleep();
         if (client.call(service)) {
-            continue;    
+            for (std::size_t i = 0; i < service.response.fk_link_names.size(); ++i) {
+                std::string link = service.response.fk_link_names[i];
+                ROS_INFO_STREAM("******* Trasform " << modelFrame << " to " << link << " ******* \n"
+                                "Translation: \n" << service.response.pose_stamped[i].pose.position << "\n"
+                                "Rotation: \n" << service.response.pose_stamped[i].pose.orientation << "\n");
+            }    
         } else {
             ROS_ERROR("Failed to call service %s", serviceName.c_str());
         }
