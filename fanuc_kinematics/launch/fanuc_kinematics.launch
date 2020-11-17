@@ -4,5 +4,6 @@
 
     <node name="FK_client" pkg="fanuc_kinematics" type="fkc_node" output="screen" />
     <node name="FK_server" pkg="fanuc_kinematics" type="fks_node" output="screen" />
+    <node name="FK_API" pkg="fanuc_kinematics" type="fkapi" output="screen" />
 
 </launch>
