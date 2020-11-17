@@ -29,3 +29,27 @@
 ## Point 5
 
 > Visualize the IK solutions in RViz
+
+## Usage
+
+### Forward Kinematics
+
+To compute FK without comparing with [moveit_msgs/GetPositionFK Service](http://docs.ros.org/en/melodic/api/moveit_msgs/html/srv/GetPositionFK.html), run
+
+```bash
+roslaunch fanuc_kinematics fanuc_fk.launch
+```
+
+or
+
+```bash
+roslaunch fanuc_kinematics fanuc_fk.launch test:=false
+```
+
+To compute FK and compare it with [moveit_msgs/GetPositionFK Service](http://docs.ros.org/en/melodic/api/moveit_msgs/html/srv/GetPositionFK.html), run
+
+```bash
+roslaunch fanuc_kinematics fanuc_fk.launch test:=true
+```
+
+### Inverse Kinematics
