@@ -10,6 +10,10 @@
 
 > Implement a service server that computes the direct kinematics of a robot and a service client that uses this service and prints the solution to stdout
 
+* The service is called [ComputeFK.srv](https://github.com/Robotics2020/RobEx04_InvKin/blob/master/fanuc_kinematics_msgs/srv/ComputeFK.srv). It has the same format as [moveit_msgs/GetPositionFK Service](http://docs.ros.org/en/melodic/api/moveit_msgs/html/srv/GetPositionFK.html).
+* The service server is implemented in the [forward_kinematics_server_node](https://github.com/Robotics2020/RobEx04_InvKin/blob/master/fanuc_kinematics/src/forward_kinematics_server_node/main.cpp)
+* The service client is implemented in the [forward_kinematics_client_node](https://github.com/Robotics2020/RobEx04_InvKin/tree/master/fanuc_kinematics/src/forward_kinematics_client_node/main.cpp)
+
 ## Point 2
 
 > Verify the result by comparing it with the service /compute_fk of the move_group node
