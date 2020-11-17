@@ -8,9 +8,9 @@
 
 bool compute_fk(fanuc_kinematics_msgs::ComputeFK::Request& request, fanuc_kinematics_msgs::ComputeFK::Response& response) {    
     // Load robot model
-    robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
-    robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
-    robot_state::RobotStatePtr robotState(new robot_state::RobotState(robotModel));
+    static robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
+    static robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
+    static robot_state::RobotStatePtr robotState(new robot_state::RobotState(robotModel));
 
     // Get request parameters
     std::vector<std::string> links = request.fk_link_names;

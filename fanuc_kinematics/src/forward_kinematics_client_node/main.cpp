@@ -57,11 +57,13 @@ int main(int argc, char** argv) {
         }
         // Update request for new configuration
         robotState->setToRandomPositions(jointModelGroup);
-        ROS_INFO_STREAM("******* New configuration: *******");
         robotState->copyJointGroupPositions(jointModelGroup, jointValues);
-        for (std::size_t i = 0; i < jointNames.size(); ++i) {
-            ROS_INFO("Joint %s: %f", jointNames[i].c_str(), jointValues[i]);
-        }        
+        std::stringstream ss;
+        ss << "******* New configuration: *******";
+        for (std::size_t i = 0; i < jointNames.size(); ++i)
+            ss << "\nJoint " << jointNames[i] << ": " << jointValues[i];
+        ROS_INFO("%s", ss.str().c_str());
+        ss.clear();
         moveit::core::robotStateToRobotStateMsg(*robotState, service.request.robot_state);        
     }
 
