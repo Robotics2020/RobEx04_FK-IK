@@ -8,18 +8,18 @@
 
 bool compute_fk(kinematics_msgs::ComputeFK::Request& request, kinematics_msgs::ComputeFK::Response& response) {    
     // Load robot model
-    static robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
-    static robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
-    static robot_state::RobotStatePtr robotState(new robot_state::RobotState(robotModel));
+    static const robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
+    static const robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
+    static const robot_state::RobotStatePtr robotState(new robot_state::RobotState(robotModel));
 
     // Get request parameters
-    std::vector<std::string> links = request.fk_link_names;
-    bool success = moveit::core::robotStateMsgToRobotState(request.robot_state, *robotState);
+    const std::vector<std::string> links = request.fk_link_names;
+    const bool success = moveit::core::robotStateMsgToRobotState(request.robot_state, *robotState);
     if (!success) return false;
 
     // Iterate over links
     for(std::size_t i = 0; i < links.size(); ++i) {
-        std::string link = links[i];
+        const std::string link = links[i];
 
         // Compute FK for each link
         const Eigen::Isometry3d& endEffectorState = robotState->getGlobalLinkTransform(link);
@@ -48,7 +48,7 @@ bool compute_fk(kinematics_msgs::ComputeFK::Request& request, kinematics_msgs::C
 
 int main(int argc, char** argv) {
     // Init node
-    ros::init(argc, argv, "fanuc_FK_server");
+    ros::init(argc, argv, "FK_server");
     ros::NodeHandle nodeHandle;
     
     // Start the service

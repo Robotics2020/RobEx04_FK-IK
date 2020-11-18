@@ -7,7 +7,7 @@
 
 
 template<class ServiceType>
-void call_service(ros::ServiceClient& client, ServiceType& service, std::string modelFrame, std::string serviceName) {
+void call_service(ros::ServiceClient& client, ServiceType& service, const std::string modelFrame, const std::string serviceName) {
     if (client.call(service)) {
         // Check if all FKs were computed and returned
         if (service.request.fk_link_names.size() != service.response.fk_link_names.size()) {
@@ -15,12 +15,13 @@ void call_service(ros::ServiceClient& client, ServiceType& service, std::string 
         }
         // Iterate over returned links
         for (std::size_t i = 0; i < service.response.fk_link_names.size(); ++i) {
-            std::string link = service.response.fk_link_names[i];
+            const std::string link = service.response.fk_link_names[i];
             ROS_INFO_STREAM("******* Forward Kinematics from " << modelFrame << " to " << link << " *******\n" <<
                             service.response.pose_stamped[i].pose);
         }
     } else {
-        ROS_ERROR("Failed to call service %s", serviceName.c_str());
+        // ROS_ERROR("Failed to call service %s", serviceName.c_str());
+        ROS_ERROR_STREAM("Failed to call service " << serviceName);
     }
 }
 
@@ -31,20 +32,20 @@ int main(int argc, char** argv) {
     std::istringstream(argv[1]) >> std::boolalpha >> test;
     
     // Init node
-    ros::init(argc, argv, "fanuc_FK_client");
+    ros::init(argc, argv, "FK_client");
     ros::NodeHandle nodeHandle;
     ros::Rate rate = ros::Rate(0.1);
     rate.sleep();
 
     // Load robot model
-    robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
-    robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
-    robot_state::RobotStatePtr robotState(new robot_state::RobotState(robotModel));
+    const robot_model_loader::RobotModelLoader robotModelLoader("robot_description");
+    const robot_model::RobotModelPtr robotModel = robotModelLoader.getModel();
+    const robot_state::RobotStatePtr robotState(new robot_state::RobotState(robotModel));
     robotState->setToDefaultValues();
-    std::string modelFrame = robotModel->getModelFrame();
-    std::string modelGroup = robotModel->getSRDF()->getGroups()[0].name_;
-    robot_state::JointModelGroup* jointModelGroup = robotModel->getJointModelGroup(modelGroup);
-    std::vector<std::string> linkNames = jointModelGroup->getLinkModelNames();  
+    const std::string modelFrame = robotModel->getModelFrame();
+    const std::string modelGroup = robotModel->getSRDF()->getGroups()[0].name_;
+    const robot_state::JointModelGroup* jointModelGroup = robotModel->getJointModelGroup(modelGroup);
+    const std::vector<std::string> linkNames = jointModelGroup->getLinkModelNames();  
     const std::vector<std::string>& jointNames = jointModelGroup->getVariableNames();
     std::vector<double> jointValues;  
 
@@ -61,19 +62,21 @@ int main(int argc, char** argv) {
     moveit::core::robotStateToRobotStateMsg(*robotState, service.request.robot_state);
 
     // Create test request
-    ros::ServiceClient test_client = nodeHandle.serviceClient<moveit_msgs::GetPositionFK>("/compute_fk");
+    ros::ServiceClient test_client;
     moveit_msgs::GetPositionFK test_service;
-    test_service.request.header.stamp = service.request.header.stamp;
-    test_service.request.header.frame_id = service.request.header.frame_id;
-    test_service.request.fk_link_names = service.request.fk_link_names;    
-
+    if (test) {
+        test_client = nodeHandle.serviceClient<moveit_msgs::GetPositionFK>("/compute_fk");
+        test_service.request.header = service.request.header;
+        test_service.request.fk_link_names = service.request.fk_link_names;
+    }
+    
     // Loop
     while (true) {
         // Post request
         call_service(client, service, modelFrame, serviceName);
         // Compare with moveit_msgs/GetPositionFK Service
         if (test) {
-            test_service.request.robot_state = service.request.robot_state;
+            test_service.request.robot_state = service.request.robot_state; 
             call_service(test_client, test_service, modelFrame, "moveit_msgs/GetPositionFK");
         }
         // Sleep
