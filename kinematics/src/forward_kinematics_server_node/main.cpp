@@ -1,8 +1,6 @@
 #include <ros/ros.h>
-#include <moveit/robot_state/robot_state.h>
-#include <moveit/robot_state/conversions.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
-#include <geometry_msgs/PoseStamped.h>
+#include <moveit/robot_state/conversions.h>
 #include "kinematics_msgs/ComputeFK.h"
 
 
