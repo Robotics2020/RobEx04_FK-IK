@@ -15,7 +15,7 @@ void call_service(ros::ServiceClient& client, ServiceType& service, const std::s
         // Iterate over returned links
         for (std::size_t i = 0; i < service.response.fk_link_names.size(); ++i) {
             const std::string link = service.response.fk_link_names[i];
-            ROS_INFO_STREAM("******* Forward Kinematics from " << modelFrame << " to " << link << " *******\n" <<
+            ROS_INFO_STREAM("******* Forward Kinematics from " << modelFrame << " to " << link << " using " << serviceName << " *******\n" <<
                             service.response.pose_stamped[i].pose);
         }
     } else {
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
         // Compare with moveit_msgs/GetPositionFK Service
         if (test) {
             test_service.request.robot_state = service.request.robot_state; 
-            call_service(test_client, test_service, modelFrame, "moveit_msgs/GetPositionFK");
+            call_service(test_client, test_service, modelFrame, "/compute_fk");
         }
         // Sleep
         rate.sleep();

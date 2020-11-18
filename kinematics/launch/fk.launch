@@ -4,7 +4,7 @@
 
     <arg name="test" default="false" />
 
-    <param name="FK_service" value="/fanuc_compute_fk" />
+    <param name="FK_service" value="/compute_forward_kinematics" />
 
     <node name="FK_client" pkg="kinematics" type="fkc_node" output="screen" args="$(arg test)"/>
     <node name="FK_server" pkg="kinematics" type="fks_node" output="screen" />
