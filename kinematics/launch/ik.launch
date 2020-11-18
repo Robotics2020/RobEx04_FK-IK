@@ -1,0 +1,13 @@
+<launch>
+
+    <include file="$(find fanuc_moveit_config)/launch/demo.launch" />
+
+    <arg name="test" default="false" />
+    <arg name="use_joint_limits" default="true" />
+
+    <param name="IK_service" value="/compute_inverse_kinematics" />
+
+    <node name="IK_client" pkg="kinematics" type="ikc_node" output="screen" args="$(arg test)" />
+    <node name="IK_server" pkg="kinematics" type="iks_node" output="screen" args="$(arg use_joint_limits)" />
+
+</launch>
